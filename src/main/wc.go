@@ -2,8 +2,12 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"mapreduce"
 	"os"
+	"strconv"
+	"strings"
+	"unicode"
 )
 
 //
@@ -15,6 +19,14 @@ import (
 //
 func mapF(filename string, contents string) []mapreduce.KeyValue {
 	// Your code here (Part II).
+	// split words from content
+	words := strings.FieldsFunc(contents, func(c rune) bool { return !unicode.IsLetter(c) })
+
+	kvs := make([]mapreduce.KeyValue, 0)
+	for _, w := range words {
+		kvs = append(kvs, mapreduce.KeyValue{Key: w, Value: "1"})
+	}
+	return kvs
 }
 
 //
@@ -24,6 +36,17 @@ func mapF(filename string, contents string) []mapreduce.KeyValue {
 //
 func reduceF(key string, values []string) string {
 	// Your code here (Part II).
+	// count the number of words
+	result := 0
+	for _, v := range values {
+		i, err := strconv.Atoi(v)
+		if err != nil {
+			log.Fatalf("Can't convert %s to integer", v)
+		}
+		result += i
+	}
+	return strconv.Itoa(result)
+
 }
 
 // Can be run in 3 ways:
