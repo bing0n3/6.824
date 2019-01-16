@@ -15,7 +15,7 @@ import (
 // key/value pairs, each represented by a mapreduce.KeyValue.
 func mapF(document string, value string) (res []mapreduce.KeyValue) {
 	// Your code here (Part V).
-	words := strings.FieldsFunc(document, func(ch rune) bool { return !unicode.IsLetter(ch) })
+	words := strings.FieldsFunc(value, func(ch rune) bool { return !unicode.IsLetter(ch) })
 	mapDoc := make(map[string]string, 0)
 	for _, word := range words {
 		mapDoc[word] = document
